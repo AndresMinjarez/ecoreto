@@ -1,0 +1,1526 @@
+```html
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>EcoReto ♻️</title>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        body {
+
+            font-family: Arial, sans-serif;
+
+            background: #e8f5e9;
+
+            margin: 0;
+
+            padding: 20px;
+
+            min-height: 100vh;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+        }
+
+
+        .juego {
+
+            width: 100%;
+
+            max-width: 650px;
+
+            background: white;
+
+            padding: 30px;
+
+            border-radius: 25px;
+
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+
+            text-align: center;
+
+        }
+
+
+        h1 {
+
+            color: #2e7d32;
+
+            font-size: 42px;
+
+            margin: 0 0 5px 0;
+
+        }
+
+
+        .subtitulo {
+
+            color: #555;
+
+            font-size: 17px;
+
+            margin-bottom: 20px;
+
+        }
+
+
+        .informacion {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            background: #f1f8e9;
+
+            padding: 12px;
+
+            border-radius: 12px;
+
+            margin-bottom: 20px;
+
+            font-weight: bold;
+
+        }
+
+
+        .puntos {
+
+            color: #1565c0;
+
+        }
+
+
+        .progreso {
+
+            color: #555;
+
+        }
+
+
+        .residuo {
+
+            font-size: 90px;
+
+            margin: 15px 0;
+
+        }
+
+
+        .nombre {
+
+            font-size: 27px;
+
+            font-weight: bold;
+
+            margin-bottom: 10px;
+
+        }
+
+
+        .pregunta {
+
+            color: #555;
+
+            font-size: 18px;
+
+            margin-bottom: 20px;
+
+        }
+
+
+        .botones {
+
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            gap: 12px;
+
+        }
+
+
+        button {
+
+            border: none;
+
+            border-radius: 12px;
+
+            padding: 17px 10px;
+
+            font-size: 17px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            color: white;
+
+            transition: 0.2s;
+
+        }
+
+
+        button:hover:not(:disabled) {
+
+            transform: scale(1.03);
+
+        }
+
+
+        button:disabled {
+
+            cursor: not-allowed;
+
+            opacity: 0.55;
+
+        }
+
+
+        .organico {
+
+            background: #43a047;
+
+        }
+
+
+        .reciclable {
+
+            background: #1976d2;
+
+        }
+
+
+        .no-reciclable {
+
+            background: #616161;
+
+        }
+
+
+        .especial {
+
+            background: #d32f2f;
+
+        }
+
+
+        #mensaje {
+
+            min-height: 65px;
+
+            margin: 20px 0 10px 0;
+
+            font-size: 19px;
+
+            font-weight: bold;
+
+            line-height: 1.5;
+
+        }
+
+
+        #siguiente {
+
+            width: 100%;
+
+            background: #1565c0;
+
+            display: none;
+
+            margin-top: 5px;
+
+        }
+
+
+        #final {
+
+            display: none;
+
+        }
+
+
+        .titulo-final {
+
+            font-size: 30px;
+
+            color: #2e7d32;
+
+            font-weight: bold;
+
+        }
+
+
+        .resultado {
+
+            font-size: 55px;
+
+            font-weight: bold;
+
+            color: #1565c0;
+
+            margin: 10px;
+
+        }
+
+
+        #comentario {
+
+            font-size: 18px;
+
+            color: #555;
+
+            margin: 20px;
+
+        }
+
+
+        #reiniciar {
+
+            width: 100%;
+
+            background: #ef6c00;
+
+        }
+
+
+        @media (max-width: 500px) {
+
+            body {
+
+                padding: 10px;
+
+            }
+
+
+            .juego {
+
+                padding: 20px;
+
+            }
+
+
+            h1 {
+
+                font-size: 34px;
+
+            }
+
+
+            .residuo {
+
+                font-size: 70px;
+
+            }
+
+
+            .nombre {
+
+                font-size: 23px;
+
+            }
+
+
+            .botones {
+
+                grid-template-columns: 1fr;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="juego">
+
+
+    <h1>♻️ EcoReto</h1>
+
+
+    <p class="subtitulo">
+
+        ¡Clasifica correctamente los residuos y ayuda al planeta!
+
+    </p>
+
+
+    <!-- INFORMACIÓN DEL JUEGO -->
+
+    <div class="informacion">
+
+        <div class="puntos">
+
+            🏆 Puntos:
+
+            <span id="puntos">0</span>
+
+        </div>
+
+
+        <div class="progreso">
+
+            📋
+
+            <span id="numero">1</span>
+
+            / 10
+
+        </div>
+
+    </div>
+
+
+    <!-- JUEGO -->
+
+    <div id="juego">
+
+
+        <div class="residuo" id="emoji">
+
+            ♻️
+
+        </div>
+
+
+        <div class="nombre" id="nombre">
+
+            Residuo
+
+        </div>
+
+
+        <div class="pregunta">
+
+            ¿En qué categoría debe ir?
+
+        </div>
+
+
+        <!-- BOTONES -->
+
+        <div class="botones">
+
+
+            <button
+
+                class="organico"
+
+                onclick="responder('organico')">
+
+                🟢 Orgánico
+
+            </button>
+
+
+            <button
+
+                class="reciclable"
+
+                onclick="responder('reciclable')">
+
+                🔵 Reciclable
+
+            </button>
+
+
+            <button
+
+                class="no-reciclable"
+
+                onclick="responder('no')">
+
+                ⚫ No reciclable
+
+            </button>
+
+
+            <button
+
+                class="especial"
+
+                onclick="responder('especial')">
+
+                🔴 Especial
+
+            </button>
+
+
+        </div>
+
+
+        <!-- MENSAJE -->
+
+        <div id="mensaje"></div>
+
+
+        <!-- SIGUIENTE -->
+
+        <button
+
+            id="siguiente"
+
+            onclick="siguientePregunta()">
+
+            Siguiente ➡️
+
+        </button>
+
+
+    </div>
+
+
+    <!-- PANTALLA FINAL -->
+
+    <div id="final">
+
+
+        <div class="titulo-final">
+
+            🎉 ¡Juego terminado!
+
+        </div>
+
+
+        <p>
+
+            Tu puntuación fue:
+
+        </p>
+
+
+        <div class="resultado">
+
+            <span id="resultado">0</span>
+
+        </div>
+
+
+        <p id="comentario"></p>
+
+
+        <button
+
+            id="reiniciar"
+
+            onclick="reiniciarJuego()">
+
+            🔄 Jugar otra vez
+
+        </button>
+
+
+    </div>
+
+
+</div>
+
+
+
+<script>
+
+
+/*
+====================================================
+LISTA DE RESIDUOS
+====================================================
+*/
+
+
+const residuos = [
+
+
+    // ==============================
+    // 🟢 ORGÁNICOS
+    // ==============================
+
+    {
+        emoji: "🍌",
+        nombre: "Cáscara de plátano",
+        respuesta: "organico"
+    },
+
+    {
+        emoji: "🍎",
+        nombre: "Cáscara de manzana",
+        respuesta: "organico"
+    },
+
+    {
+        emoji: "🍊",
+        nombre: "Cáscara de naranja",
+        respuesta: "organico"
+    },
+
+    {
+        emoji: "🍉",
+        nombre: "Cáscara de sandía",
+        respuesta: "organico"
+    },
+
+    {
+        emoji: "🥚",
+        nombre: "Cáscara de huevo",
+        respuesta: "organico"
+    },
+
+    {
+        emoji: "🥬",
+        nombre: "Hojas de lechuga",
+        respuesta: "organico"
+    },
+
+    {
+        emoji: "🥕",
+        nombre: "Restos de zanahoria",
+        respuesta: "organico"
+    },
+
+    {
+        emoji: "🥔",
+        nombre: "Cáscara de papa",
+        respuesta: "organico"
+    },
+
+    {
+        emoji: "🌽",
+        nombre: "Olote de maíz",
+        respuesta: "organico"
+    },
+
+    {
+        emoji: "🍞",
+        nombre: "Pan viejo",
+        respuesta: "organico"
+    },
+
+    {
+        emoji: "🍚",
+        nombre: "Arroz sobrante",
+        respuesta: "organico"
+    },
+
+    {
+        emoji: "🍝",
+        nombre: "Pasta sobrante",
+        respuesta: "organico"
+    },
+
+    {
+        emoji: "🍕",
+        nombre: "Restos de pizza",
+        respuesta: "organico"
+    },
+
+    {
+        emoji: "🥗",
+        nombre: "Restos de ensalada",
+        respuesta: "organico"
+    },
+
+    {
+        emoji: "🍗",
+        nombre: "Restos de comida",
+        respuesta: "organico"
+    },
+
+    {
+        emoji: "☕",
+        nombre: "Café molido",
+        respuesta: "organico"
+    },
+
+    {
+        emoji: "🍵",
+        nombre: "Restos de té",
+        respuesta: "organico"
+    },
+
+    {
+        emoji: "🌿",
+        nombre: "Hojas secas",
+        respuesta: "organico"
+    },
+
+    {
+        emoji: "🌱",
+        nombre: "Restos de plantas",
+        respuesta: "organico"
+    },
+
+    {
+        emoji: "🌻",
+        nombre: "Flores marchitas",
+        respuesta: "organico"
+    },
+
+    {
+        emoji: "🥑",
+        nombre: "Hueso de aguacate",
+        respuesta: "organico"
+    },
+
+    {
+        emoji: "🍍",
+        nombre: "Cáscara de piña",
+        respuesta: "organico"
+    },
+
+
+    // ==============================
+    // 🔵 RECICLABLES
+    // ==============================
+
+    {
+        emoji: "🥤",
+        nombre: "Botella de plástico",
+        respuesta: "reciclable"
+    },
+
+    {
+        emoji: "🧴",
+        nombre: "Botella de shampoo",
+        respuesta: "reciclable"
+    },
+
+    {
+        emoji: "🧼",
+        nombre: "Envase de jabón limpio",
+        respuesta: "reciclable"
+    },
+
+    {
+        emoji: "🥛",
+        nombre: "Envase de plástico limpio",
+        respuesta: "reciclable"
+    },
+
+    {
+        emoji: "🧃",
+        nombre: "Caja de jugo",
+        respuesta: "reciclable"
+    },
+
+    {
+        emoji: "🥫",
+        nombre: "Lata de refresco",
+        respuesta: "reciclable"
+    },
+
+    {
+        emoji: "🥫",
+        nombre: "Lata de comida limpia",
+        respuesta: "reciclable"
+    },
+
+    {
+        emoji: "🫙",
+        nombre: "Frasco de vidrio",
+        respuesta: "reciclable"
+    },
+
+    {
+        emoji: "🍾",
+        nombre: "Botella de vidrio",
+        respuesta: "reciclable"
+    },
+
+    {
+        emoji: "📦",
+        nombre: "Caja de cartón",
+        respuesta: "reciclable"
+    },
+
+    {
+        emoji: "📄",
+        nombre: "Hoja de papel limpia",
+        respuesta: "reciclable"
+    },
+
+    {
+        emoji: "📰",
+        nombre: "Periódico",
+        respuesta: "reciclable"
+    },
+
+    {
+        emoji: "📚",
+        nombre: "Libro viejo",
+        respuesta: "reciclable"
+    },
+
+    {
+        emoji: "📓",
+        nombre: "Cuaderno usado",
+        respuesta: "reciclable"
+    },
+
+    {
+        emoji: "✉️",
+        nombre: "Sobre de papel",
+        respuesta: "reciclable"
+    },
+
+    {
+        emoji: "🗞️",
+        nombre: "Revista",
+        respuesta: "reciclable"
+    },
+
+    {
+        emoji: "🛍️",
+        nombre: "Bolsa de papel",
+        respuesta: "reciclable"
+    },
+
+    {
+        emoji: "🥣",
+        nombre: "Envase de plástico limpio",
+        respuesta: "reciclable"
+    },
+
+    {
+        emoji: "🧋",
+        nombre: "Vaso de plástico limpio",
+        respuesta: "reciclable"
+    },
+
+    {
+        emoji: "🍶",
+        nombre: "Botella de vidrio limpia",
+        respuesta: "reciclable"
+    },
+
+    {
+        emoji: "🪟",
+        nombre: "Vidrio limpio",
+        respuesta: "reciclable"
+    },
+
+    {
+        emoji: "🧻",
+        nombre: "Cartón de papel limpio",
+        respuesta: "reciclable"
+    },
+
+    {
+        emoji: "🥡",
+        nombre: "Envase plástico limpio",
+        respuesta: "reciclable"
+    },
+
+    {
+        emoji: "🗂️",
+        nombre: "Carpeta de cartón",
+        respuesta: "reciclable"
+    },
+
+
+    // ==============================
+    // ⚫ NO RECICLABLES
+    // ==============================
+
+    {
+        emoji: "🧻",
+        nombre: "Papel higiénico usado",
+        respuesta: "no"
+    },
+
+    {
+        emoji: "🧻",
+        nombre: "Servilleta sucia",
+        respuesta: "no"
+    },
+
+    {
+        emoji: "🪥",
+        nombre: "Cepillo de dientes usado",
+        respuesta: "no"
+    },
+
+    {
+        emoji: "🧽",
+        nombre: "Esponja usada",
+        respuesta: "no"
+    },
+
+    {
+        emoji: "🩹",
+        nombre: "Curita usada",
+        respuesta: "no"
+    },
+
+    {
+        emoji: "🍬",
+        nombre: "Envoltura de dulce",
+        respuesta: "no"
+    },
+
+    {
+        emoji: "🍟",
+        nombre: "Bolsa de papas fritas",
+        respuesta: "no"
+    },
+
+    {
+        emoji: "🍫",
+        nombre: "Envoltura de chocolate",
+        respuesta: "no"
+    },
+
+    {
+        emoji: "👟",
+        nombre: "Zapato viejo",
+        respuesta: "no"
+    },
+
+    {
+        emoji: "🧦",
+        nombre: "Calcetín viejo",
+        respuesta: "no"
+    },
+
+    {
+        emoji: "🧸",
+        nombre: "Juguete roto",
+        respuesta: "no"
+    },
+
+    {
+        emoji: "🎈",
+        nombre: "Globo usado",
+        respuesta: "no"
+    },
+
+    {
+        emoji: "🪒",
+        nombre: "Rastrillo desechable",
+        respuesta: "no"
+    },
+
+    {
+        emoji: "🍽️",
+        nombre: "Plato desechable sucio",
+        respuesta: "no"
+    },
+
+    {
+        emoji: "🥤",
+        nombre: "Vaso desechable sucio",
+        respuesta: "no"
+    },
+
+    {
+        emoji: "🧹",
+        nombre: "Escoba rota",
+        respuesta: "no"
+    },
+
+    {
+        emoji: "🧴",
+        nombre: "Envase contaminado",
+        respuesta: "no"
+    },
+
+    {
+        emoji: "🧼",
+        nombre: "Esponja contaminada",
+        respuesta: "no"
+    },
+
+    {
+        emoji: "🍴",
+        nombre: "Cubierto desechable sucio",
+        respuesta: "no"
+    },
+
+    {
+        emoji: "🛍️",
+        nombre: "Bolsa de plástico sucia",
+        respuesta: "no"
+    },
+
+
+    // ==============================
+    // 🔴 ESPECIALES
+    // ==============================
+
+    {
+        emoji: "🔋",
+        nombre: "Pila",
+        respuesta: "especial"
+    },
+
+    {
+        emoji: "🪫",
+        nombre: "Batería",
+        respuesta: "especial"
+    },
+
+    {
+        emoji: "📱",
+        nombre: "Celular viejo",
+        respuesta: "especial"
+    },
+
+    {
+        emoji: "💻",
+        nombre: "Computadora vieja",
+        respuesta: "especial"
+    },
+
+    {
+        emoji: "⌨️",
+        nombre: "Teclado viejo",
+        respuesta: "especial"
+    },
+
+    {
+        emoji: "🖱️",
+        nombre: "Mouse viejo",
+        respuesta: "especial"
+    },
+
+    {
+        emoji: "🎧",
+        nombre: "Audífonos dañados",
+        respuesta: "especial"
+    },
+
+    {
+        emoji: "🔌",
+        nombre: "Cargador viejo",
+        respuesta: "especial"
+    },
+
+    {
+        emoji: "💡",
+        nombre: "Foco",
+        respuesta: "especial"
+    },
+
+    {
+        emoji: "🖨️",
+        nombre: "Impresora vieja",
+        respuesta: "especial"
+    },
+
+    {
+        emoji: "📺",
+        nombre: "Televisión vieja",
+        respuesta: "especial"
+    },
+
+    {
+        emoji: "📷",
+        nombre: "Cámara vieja",
+        respuesta: "especial"
+    },
+
+    {
+        emoji: "⌚",
+        nombre: "Reloj electrónico",
+        respuesta: "especial"
+    },
+
+    {
+        emoji: "🎮",
+        nombre: "Control de videojuegos viejo",
+        respuesta: "especial"
+    },
+
+    {
+        emoji: "📻",
+        nombre: "Radio vieja",
+        respuesta: "especial"
+    },
+
+    {
+        emoji: "🔦",
+        nombre: "Linterna dañada",
+        respuesta: "especial"
+    },
+
+    {
+        emoji: "🛜",
+        nombre: "Router viejo",
+        respuesta: "especial"
+    },
+
+    {
+        emoji: "🖥️",
+        nombre: "Monitor viejo",
+        respuesta: "especial"
+    },
+
+    {
+        emoji: "💿",
+        nombre: "CD viejo",
+        respuesta: "especial"
+    },
+
+    {
+        emoji: "📀",
+        nombre: "DVD viejo",
+        respuesta: "especial"
+    }
+
+];
+
+
+
+/*
+====================================================
+VARIABLES
+====================================================
+*/
+
+
+let preguntas = [];
+
+let pregunta = 0;
+
+let puntos = 0;
+
+
+/*
+    Esta lista guarda los residuos que
+    todavía NO han aparecido.
+*/
+
+let residuosDisponibles = [];
+
+
+
+/*
+====================================================
+PREPARAR PARTIDA
+====================================================
+*/
+
+
+function prepararJuego() {
+
+
+    /*
+        Si ya no quedan suficientes residuos,
+        volvemos a meter todos en la bolsa.
+    */
+
+    if (residuosDisponibles.length < 10) {
+
+        residuosDisponibles = [...residuos];
+
+
+        /*
+            Revolver los residuos
+            usando Fisher-Yates.
+        */
+
+        for (
+            let i = residuosDisponibles.length - 1;
+            i > 0;
+            i--
+        ) {
+
+            let j =
+                Math.floor(
+                    Math.random() * (i + 1)
+                );
+
+
+            let temporal =
+                residuosDisponibles[i];
+
+
+            residuosDisponibles[i] =
+                residuosDisponibles[j];
+
+
+            residuosDisponibles[j] =
+                temporal;
+
+        }
+
+    }
+
+
+    /*
+        Sacamos 10 residuos.
+    */
+
+    preguntas =
+        residuosDisponibles.splice(0, 10);
+
+
+    pregunta = 0;
+
+    puntos = 0;
+
+
+    document.getElementById("puntos").textContent =
+        puntos;
+
+
+    document.getElementById("juego").style.display =
+        "block";
+
+
+    document.getElementById("final").style.display =
+        "none";
+
+
+    mostrarPregunta();
+
+}
+
+
+
+/*
+====================================================
+MOSTRAR PREGUNTA
+====================================================
+*/
+
+
+function mostrarPregunta() {
+
+
+    document.getElementById("emoji").textContent =
+        preguntas[pregunta].emoji;
+
+
+    document.getElementById("nombre").textContent =
+        preguntas[pregunta].nombre;
+
+
+    document.getElementById("numero").textContent =
+        pregunta + 1;
+
+
+    document.getElementById("mensaje").innerHTML =
+        "";
+
+
+    document.getElementById("siguiente").style.display =
+        "none";
+
+
+    /*
+        Activar todos los botones.
+    */
+
+    let botones =
+        document.querySelectorAll(".botones button");
+
+
+    botones.forEach(function(boton) {
+
+        boton.disabled = false;
+
+        boton.style.opacity = "1";
+
+    });
+
+}
+
+
+
+/*
+====================================================
+RESPONDER
+====================================================
+*/
+
+
+function responder(respuesta) {
+
+
+    let mensaje =
+        document.getElementById("mensaje");
+
+
+    /*
+        Si la respuesta es correcta.
+    */
+
+    if (
+        respuesta ===
+        preguntas[pregunta].respuesta
+    ) {
+
+
+        puntos += 10;
+
+
+        mensaje.innerHTML =
+            "✅ ¡Correcto! <b>+10 puntos</b>";
+
+
+        mensaje.style.color =
+            "green";
+
+    }
+
+
+    /*
+        Si la respuesta es incorrecta.
+    */
+
+    else {
+
+
+        puntos -= 5;
+
+
+        let correcta =
+            preguntas[pregunta].respuesta;
+
+
+        let textoCorrecto =
+            "";
+
+
+        /*
+            Convertir la respuesta
+            a texto fácil de leer.
+        */
+
+        if (correcta === "organico") {
+
+            textoCorrecto =
+                "🟢 Orgánico";
+
+        }
+
+
+        else if (correcta === "reciclable") {
+
+            textoCorrecto =
+                "🔵 Reciclable";
+
+        }
+
+
+        else if (correcta === "no") {
+
+            textoCorrecto =
+                "⚫ No reciclable";
+
+        }
+
+
+        else if (correcta === "especial") {
+
+            textoCorrecto =
+                "🔴 Especial";
+
+        }
+
+
+        mensaje.innerHTML =
+
+            "❌ ¡Incorrecto! <b>-5 puntos</b><br>" +
+
+            "💡 La respuesta correcta era: " +
+
+            "<b>" + textoCorrecto + "</b>";
+
+
+        mensaje.style.color =
+            "#d32f2f";
+
+    }
+
+
+    /*
+        Actualizar puntos.
+    */
+
+    document.getElementById("puntos").textContent =
+        puntos;
+
+
+    /*
+        Mostrar botón siguiente.
+    */
+
+    document.getElementById("siguiente").style.display =
+        "block";
+
+
+    /*
+        Desactivar botones para evitar
+        responder varias veces.
+    */
+
+    let botones =
+        document.querySelectorAll(".botones button");
+
+
+    botones.forEach(function(boton) {
+
+        boton.disabled = true;
+
+        boton.style.opacity = "0.55";
+
+    });
+
+}
+
+
+
+/*
+====================================================
+SIGUIENTE PREGUNTA
+====================================================
+*/
+
+
+function siguientePregunta() {
+
+
+    pregunta++;
+
+
+    if (pregunta >= preguntas.length) {
+
+        terminarJuego();
+
+    }
+
+    else {
+
+        mostrarPregunta();
+
+    }
+
+}
+
+
+
+/*
+====================================================
+TERMINAR JUEGO
+====================================================
+*/
+
+
+function terminarJuego() {
+
+
+    document.getElementById("juego").style.display =
+        "none";
+
+
+    document.getElementById("final").style.display =
+        "block";
+
+
+    document.getElementById("resultado").textContent =
+        puntos;
+
+
+    /*
+        Mensaje dependiendo de la puntuación.
+    */
+
+
+    if (puntos >= 90) {
+
+
+        document.getElementById("comentario").textContent =
+
+            "🌎 ¡INCREÍBLE! Eres un experto en reciclaje.";
+
+
+    }
+
+
+    else if (puntos >= 70) {
+
+
+        document.getElementById("comentario").textContent =
+
+            "♻️ ¡Excelente trabajo! Sabes separar muy bien los residuos.";
+
+
+    }
+
+
+    else if (puntos >= 50) {
+
+
+        document.getElementById("comentario").textContent =
+
+            "👍 ¡Muy bien! Solo necesitas practicar un poco más.";
+
+
+    }
+
+
+    else {
+
+
+        document.getElementById("comentario").textContent =
+
+            "🌱 ¡Sigue practicando! Cada pequeño esfuerzo ayuda al planeta.";
+
+    }
+
+}
+
+
+
+/*
+====================================================
+REINICIAR
+====================================================
+*/
+
+
+function reiniciarJuego() {
+
+    prepararJuego();
+
+}
+
+
+
+/*
+====================================================
+INICIAR EL JUEGO
+====================================================
+*/
+
+
+prepararJuego();
+
+
+</script>
+
+
+</body>
+
+</html>
+```
